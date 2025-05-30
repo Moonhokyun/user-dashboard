@@ -61,7 +61,7 @@ import * as pdfjsLib from "pdfjs-dist/build/pdf";
 // 그리고 vite.config.js 에 publicDir: 'public' (기본값) 확인
 // public/pdfjs 폴더를 만들고 그 안에 node_modules/pdfjs-dist/build/pdf.worker.min.js 파일을 복사합니다.
 // 그런 다음 아래와 같이 설정:
-pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdfjs/pdf.worker.min.js";
+pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdfjs/pdf.worker.min.mjs";
 
 const userStore = useUserStore();
 
@@ -131,54 +131,109 @@ async function handleFileUpload(event) {
   reader.readAsArrayBuffer(file);
 }
 
-// PDF 텍스트를 파싱하여 사용자 정보 배열로 변환하는 함수 (매우 단순한 예시)
-// 실제 구현 시에는 PDF의 구체적인 텍스트 구조에 맞춰 정교한 파싱 로직이 필요합니다.
+// PDF 텍스트를 파싱하여 사용자 정보 배열로 변환하는 함수
+// src/components/FileUpload.vue 의 <script setup> 내부
+
+// ... (다른 import 및 userStore 선언 등은 이전과 동일)
+
+// PDF 텍스트를 파싱하여 사용자 정보 배열로 변환하는 함수
 function parseTextToUsers(text) {
   const users = [];
-  // 예시: "이름: 홍길동 / 등급: 3 / 최종 접속일: 2024-05-01 / 최종 참여일: 2024-04-20 / 자기소개: 안녕하세요."
-  // 위와 같은 형식의 텍스트 라인이 있다고 가정합니다.
-  const lines = text.split("\n");
-  lines.forEach((line) => {
-    try {
-      // 이름 추출 (예시: "회원 이름: 홍길동" 또는 단순히 "이름: 홍길동")
-      const nameMatch = line.match(/(?:회원 이름|이름)\s*:\s*([^\/]+)/);
-      // 등급 추출 (예시: "등급 (모임 참여 횟수): 5" 또는 "등급: 5")
-      const gradeMatch = line.match(
-        /(?:등급(?: \(모임 참여 횟수\))?)\s*:\s*(\d+)/
-      );
-      // 최종 접속일 추출 (예시: "최종 접속일: YYYY-MM-DD")
-      const lastLoginMatch = line.match(
-        /최종 접속일\s*:\s*(\d{4}-\d{2}-\d{2})/
-      );
-      // 최종 참여일 추출 (예시: "최종 참여일: YYYY-MM-DD")
-      const lastParticipationMatch = line.match(
-        /최종 참여일\s*:\s*(\d{4}-\d{2}-\d{2})/
-      );
-      // 자기소개 추출 (예시: "자기소개 내용: 안녕하세요.")
-      const introMatch = line.match(/(?:자기소개 내용|자기소개)\s*:\s*(.+)/);
+  if (!text || text.trim() === "") {
+    console.warn("parseTextToUsers: 입력된 텍스트가 비어있습니다.");
+    return users;
+  }
 
-      if (
-        nameMatch &&
-        gradeMatch &&
-        lastLoginMatch &&
-        lastParticipationMatch &&
-        introMatch
-      ) {
+  // 1. 텍스트 정규화: 여러 공백을 하나로, 앞뒤 공백 제거
+  const normalizedText = text.replace(/\s+/g, " ").trim();
+  console.log("Normalized Text:", normalizedText);
+
+  // 2. 헤더 문자열 정의 (실제 추출된 헤더와 일치해야 함)
+  // 주의: "( 모임 참여 횟수 )" 부분의 괄호 앞뒤 공백이 정규화된 텍스트와 일치하는지 확인 필요
+  const headerPattern =
+    "회원 이름 등급 ( 모임 참여 횟수 ) 최종 접속일 최종 참여일 자기소개 내용";
+
+  let dataString = normalizedText;
+  if (normalizedText.startsWith(headerPattern)) {
+    dataString = normalizedText.substring(headerPattern.length).trim();
+  } else {
+    console.warn(
+      "parseTextToUsers: 예상된 헤더 패턴을 찾지 못했습니다. 전체 텍스트를 데이터로 간주합니다."
+    );
+    // 헤더가 없거나 다를 경우에 대한 처리 (예: 오류 반환 또는 다른 방식 시도)
+  }
+  console.log("Data String (after header removal):", dataString);
+
+  if (!dataString) {
+    return users;
+  }
+
+  // 3. 데이터 레코드 추출 및 필드 파싱
+  // 각 레코드를 식별하기 위한 정규표현식
+  // 패턴: (이름) (숫자) (시간관련문자열) (날짜 YYYY/MM/DD) (나머지 자기소개)
+  // 이름: 최대한 많은 문자 (단, 다음 패턴 시작 전까지)
+  // 자기소개: 다음 이름과 숫자 패턴이 나오기 전까지의 모든 문자
+
+  // 정규표현식 설명:
+  // 1. `(.+?)`: 이름 (비탐욕적 매칭, 그룹 1) - 하나 이상의 문자
+  // 2. `\s+`: 하나 이상의 공백
+  // 3. `(\d+)`: 등급 (숫자, 그룹 2)
+  // 4. `\s+`: 하나 이상의 공백
+  // 5. `((?:방금|(?:\d+\s*시간)|(?:\d+\s*분))\s*전)`: 최종 접속일 (예: "방금 전", "1 시간 전", 그룹 3)
+  // 6. `\s+`: 하나 이상의 공백
+  // 7. `(\d{4}\/\d{2}\/\d{2})`: 최종 참여일 (YYYY/MM/DD 형식, 그룹 4)
+  // 8. `\s+`: 하나 이상의 공백
+  // 9. `(.*?)`: 자기소개 (비탐욕적 매칭, 그룹 5)
+  // 10. `(?= ... |$)`: 다음 사용자 레코드의 시작 패턴 또는 문자열의 끝을 확인 (Positive Lookahead)
+  //     다음 사용자 레코드 시작 패턴: 공백 + 이름_패턴 + 공백 + 숫자 (등급)
+  //     이름_패턴: `[가-힣A-Za-z]+(?:\s*\(.*?\))?` - 한글/영문자로 시작, 선택적으로 괄호와 내용 포함
+  const userEntryRegex =
+    /(.+?)\s+(\d+)\s+((?:방금|(?:\d+\s*시간)|(?:\d+\s*분))\s*전)\s+(\d{4}\/\d{2}\/\d{2})\s+(.*?)(?=\s+[가-힣A-Za-z]+(?:\s*\(.*?\))?\s+\d+\s+(?:방금|(?:\d+\s*시간)|(?:\d+\s*분))\s*전|$)/g;
+
+  let match;
+  while ((match = userEntryRegex.exec(dataString)) !== null) {
+    try {
+      const name = match[1].trim();
+      const grade = parseInt(match[2]);
+      const lastLogin = match[3].trim();
+      const lastParticipation = match[4].trim();
+      const intro = match[5].trim();
+
+      if (name && !isNaN(grade)) {
         users.push({
-          name: nameMatch[1].trim(),
-          grade: parseInt(gradeMatch[1]),
-          lastLogin: lastLoginMatch[1].trim(),
-          lastParticipation: lastParticipationMatch[1].trim(),
-          intro: introMatch[1].trim(),
+          name,
+          grade,
+          lastLogin,
+          lastParticipation,
+          intro,
         });
+      } else {
+        console.warn(
+          "parseTextToUsers: 유효하지 않은 데이터로 레코드를 건너뜁니다.",
+          match[0]
+        );
       }
     } catch (e) {
-      console.warn("Error parsing line: ", line, e);
-      // 파싱 중 오류가 발생해도 다른 라인 처리를 계속합니다.
+      console.error("parseTextToUsers: 레코드 처리 중 오류:", match[0], e);
     }
-  });
+  }
+
+  if (users.length === 0 && dataString.length > 0) {
+    console.warn(
+      "parseTextToUsers: 데이터 문자열이 있었으나 유효한 사용자 정보를 추출하지 못했습니다."
+    );
+    userStore.setError(
+      "PDF에서 유효한 회원 정보를 찾지 못했습니다. 파일 형식이 다르거나 내용 추출에 실패했습니다."
+    );
+  } else if (users.length > 0) {
+    userStore.setError(""); // 성공 시 이전 오류 메시지 초기화
+  }
+
   return users;
 }
+
+// ... (handleFileUpload, processExamplePDF 등 나머지 코드는 이전과 동일하게 유지)
+// handleFileUpload 함수 내부에서 parseTextToUsers(allText)를 호출하는 부분 확인
 
 // 예시 PDF 처리 (실제 파일 없이 더미 데이터 사용)
 function processExamplePDF() {
