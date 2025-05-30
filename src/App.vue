@@ -2,26 +2,22 @@
 // import { RouterLink, RouterView } from "vue-router";
 // import HelloWorld from "./components/HelloWorld.vue";
 import FileUpload from "@/components/FileUpload.vue";
+import Dashboard from "@/components/Dashboard.vue";
 </script>
 
 <template>
-  <!-- <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView /> -->
-  <main>
-    <FileUpload />
-  </main>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12">
+        <FileUpload />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <Dashboard />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <style scoped></style>
