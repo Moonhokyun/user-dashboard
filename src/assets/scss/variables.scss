@@ -1,40 +1,25 @@
-// src/assets/scss/variables.scss
-
-// Vuetify의 SASS 변수를 재정의합니다.
-// 예시: 기본 테마 색상 변경
-// 문서: https://vuetifyjs.com/en/features/sass-variables/
-// 사용 가능한 변수 목록은 node_modules/vuetify/src/styles/settings/_variables.scss 에서 찾을 수 있습니다.
-
-// $font-family: 'Roboto', sans-serif; // 기본 폰트 변경 예시
-// $body-font-family: 'Noto Sans KR', sans-serif; // 본문 폰트 변경 예시
-
-// Vuetify 3는 CSS 변수를 주로 사용하지만, SASS 변수를 통해 일부 기본 설정을 변경할 수 있습니다.
-// 색상 팔레트의 경우, Vuetify 인스턴스 생성 시 themes 옵션으로 CSS 변수를 통해 제어하는 것이 더 일반적입니다.
-// 하지만 일부 SASS 변수는 여전히 유용합니다.
-// 예를 들어, 특정 컴포넌트의 기본 스타일과 관련된 SASS 변수가 있다면 여기서 재정의할 수 있습니다.
-
-// 예시: 버튼의 기본 높이 변경 (실제 변수명은 Vuetify 문서를 참조해야 합니다)
-// $button-height: 48px;
-
-// 중요: Vuetify 3에서는 CSS 변수를 사용한 테마 커스터마이징이 더 강조됩니다.
-// 이 SASS 변수 파일은 주로 빌드 타임에 적용되는 일부 기본값이나 글로벌 SASS 믹스인, 함수 등을 정의하는 데 사용될 수 있습니다.
-// Vuetify 테마(색상 등)를 주로 변경하고 싶다면, src/main.js에서 createVuetify의 themes 옵션을 사용하세요.
-
-// 이 파일에서는 주로 글로벌 SCSS 변수, 믹스인 등을 정의하고,
-// Vuetify의 특정 SASS 변수를 알고 있다면 그것을 오버라이드 할 수 있습니다.
-// 만약 Vuetify의 특정 내부 SASS 변수를 오버라이드 하려면 해당 변수가 @forward 되거나 public API로 노출되어 있어야 합니다.
-
-// 우선 이 파일은 Vuetify의 SASS 변수를 재정의할 수 있는 위치로 설정하고,
-// 필요한 변수가 있다면 Vuetify 공식 문서를 참고하여 추가하세요.
-// 지금은 간단한 예시로 커스텀 SCSS 변수를 하나 정의해 보겠습니다.
 $my-custom-padding: 16px;
+$custom-border: 1px solid #000;
+@mixin text-container-header {
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 1.6;
+}
 
-// Vuetify 컴포넌트 스타일을 직접 SASS로 덮어쓰고 싶다면,
-// 이 파일보다는 별도의 SCSS 파일을 만들어 main.js에 import 하거나,
-// vite.config.js의 vite-plugin-vuetify 설정에 따라 이 파일에 Vuetify 스타일을 import 하고 그 위에 덮어쓰는 방식을 사용할 수도 있습니다.
-// 하지만 vite-plugin-vuetify는 주로 SASS 변수 설정을 위해 이 파일을 사용합니다.
+@mixin text-body-header14 {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 1.6;
+}
 
-// Vuetify의 기본 스타일을 import 하고 싶다면 (주의: 이 파일이 vite-plugin-vuetify의 styles.configFile로 지정될 경우 자동 처리될 수 있음)
-// @use 'vuetify/styles' with (
-//   // $font-size-root: 14px // 예시: 루트 폰트 사이즈 변경
-// );
+@mixin text-body-body14 {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+@mixin text-body-label12 {
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 1.6;
+}

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card v-if="userStore.selectedUser" class="mb-6">
-      <v-card-title>
+      <v-card-title class="main-title">
         <v-icon start>mdi-account-details</v-icon>
         회원 상세 정보
       </v-card-title>
@@ -40,7 +40,7 @@
     </v-card>
 
     <v-card v-else>
-      <v-card-title>
+      <v-card-title class="main-title">
         <v-icon start>mdi-filter-variant</v-icon>
         등급별 회원 정보
       </v-card-title>
@@ -194,11 +194,27 @@ if (userStore.selectedGradeForChip !== null) {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "@/assets/scss/variables.scss";
 .v-card {
   margin-bottom: 16px;
 }
 .v-list-item-subtitle {
   white-space: pre-wrap; /* 자기소개 줄바꿈 적용 */
+}
+.main-title {
+  @include text-container-header;
+}
+
+.sub-title {
+  @include text-body-header14;
+}
+
+.body-text {
+  @include text-body-body14;
+}
+
+.label-text {
+  @include text-body-label12;
 }
 </style>

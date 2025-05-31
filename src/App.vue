@@ -6,20 +6,22 @@ import UserInfoByType from "@/components/UserInfoByType.vue";
 
 <template>
   <v-container fluid>
-    <v-col>
-      <v-col cols="12">
+    <v-container>
+      <v-container>
         <FileUpload />
-      </v-col>
-    </v-col>
-    <v-col>
-      <v-col cols="12" md="7">
+      </v-container>
+    </v-container>
+    <v-container>
+      <v-container>
         <Dashboard />
-      </v-col>
-      <v-col cols="12" md="5">
+      </v-container>
+      <v-container>
         <UserInfoByType />
-      </v-col>
-    </v-col>
+      </v-container>
+    </v-container>
   </v-container>
 </template>
 
-<style scoped></style>
+<style lang="scss" scoped>
+@import "@/assets/scss/variables.scss";
+</style>

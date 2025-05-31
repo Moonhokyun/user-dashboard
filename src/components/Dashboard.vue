@@ -1,9 +1,9 @@
 <template>
   <v-container>
-    <v-col>
-      <v-col cols="12" md="6">
-        <v-card>
-          <v-card-title>등급별 회원 수</v-card-title>
+    <v-container>
+      <v-container>
+        <v-card class="dashboard-card">
+          <v-card-title class="main-title">등급별 회원 수</v-card-title>
           <v-card-text>
             <Bar
               v-if="chartData.labels && chartData.labels.length > 0"
@@ -25,11 +25,11 @@
             </p>
           </v-card-text>
         </v-card>
-      </v-col>
+      </v-container>
 
-      <v-col cols="12" md="6">
-        <v-card>
-          <v-card-title>회원 목록</v-card-title>
+      <v-container>
+        <v-card class="dashboard-card">
+          <v-card-title class="main-title">회원 목록</v-card-title>
           <v-card-text>
             <v-data-table
               :headers="tableHeaders"
@@ -52,8 +52,8 @@
             </v-data-table>
           </v-card-text>
         </v-card>
-      </v-col>
-    </v-col>
+      </v-container>
+    </v-container>
   </v-container>
 </template>
 
@@ -174,9 +174,30 @@ watch(
 );
 </script>
 
-<style scoped>
-/* 필요한 경우 스타일 추가 */
+<style lang="scss" scoped>
+@import "@/assets/scss/variables.scss";
+@import "@/assets/scss/variables.scss";
+
 .v-card {
   margin-bottom: 16px;
+  max-width: none !important;
+}
+.dashboard-card {
+  border: $custom-border;
+}
+.main-title {
+  @include text-container-header;
+}
+
+.sub-title {
+  @include text-body-header14;
+}
+
+.body-text {
+  @include text-body-body14;
+}
+
+.label-text {
+  @include text-body-label12;
 }
 </style>

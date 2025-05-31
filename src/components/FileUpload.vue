@@ -1,7 +1,9 @@
 <template>
   <v-container>
     <v-card>
-      <v-card-title>회원 정보 PDF 업로드</v-card-title>
+      <v-card-title class="main-title"
+        >정보 확인을 위한 파일을 첨부하세요</v-card-title
+      >
       <v-card-text>
         <v-file-input
           label="PDF 파일을 선택하세요"
@@ -284,6 +286,21 @@ function processExamplePDF() {
 }
 </script>
 
-<style scoped>
-/* 필요한 경우 스타일 추가 */
+<style lang="scss" scoped>
+@import "@/assets/scss/variables.scss";
+.main-title {
+  @include text-container-header;
+}
+
+.sub-title {
+  @include text-body-header14;
+}
+
+.body-text {
+  @include text-body-body14;
+}
+
+.label-text {
+  @include text-body-label12;
+}
 </style>
