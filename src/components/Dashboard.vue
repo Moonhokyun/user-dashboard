@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row>
+    <v-col>
       <v-col cols="12" md="6">
         <v-card>
           <v-card-title>등급별 회원 수</v-card-title>
@@ -53,7 +53,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-    </v-row>
+    </v-col>
   </v-container>
 </template>
 
