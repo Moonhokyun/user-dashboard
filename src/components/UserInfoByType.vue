@@ -1,10 +1,7 @@
 <template>
   <v-container>
-    <v-card v-if="userStore.selectedUser" class="mb-6">
-      <v-card-title class="main-title">
-        <v-icon start>mdi-account-details</v-icon>
-        회원 상세 정보
-      </v-card-title>
+    <v-card class="userboard-card" v-if="userStore.selectedUser">
+      <v-card-title class="main-title"> 회원 상세 정보 </v-card-title>
       <v-list lines="two">
         <v-list-item
           :title="userStore.selectedUser.name"
@@ -39,12 +36,12 @@
       </v-card-actions>
     </v-card>
 
-    <v-card v-else>
+    <v-card class="userboard-info-card" v-else>
       <v-card-title class="main-title">
         <v-icon start>mdi-filter-variant</v-icon>
         등급별 회원 정보
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="user-info-table-wrap">
         <p
           v-if="
             userStore.users.length === 0 &&
@@ -88,7 +85,6 @@
           v-if="selectedChipGrade !== null && actionSuggestion"
           type="info"
           variant="tonal"
-          class="mt-4"
           dense
         >
           <v-alert-title
@@ -100,7 +96,6 @@
           v-if="selectedChipGrade === null && userStore.users.length > 0"
           type="info"
           variant="tonal"
-          class="mt-4"
           dense
         >
           전체 회원을 보고 있습니다. 등급을 선택하여 필터링할 수 있습니다.
@@ -111,7 +106,7 @@
           :headers="filteredTableHeaders"
           :items="filteredUsersByGrade"
           item-value="name"
-          class="elevation-1 mt-4"
+          class="table-wrap"
           :loading="userStore.isLoading"
           items-per-page="5"
         >
@@ -119,7 +114,7 @@
             <v-skeleton-loader type="table-row@3"></v-skeleton-loader>
           </template>
           <template v-slot:no-data>
-            <v-alert type="warning" prominent dense class="mt-4">
+            <v-alert type="warning" prominent dense>
               선택된 등급에 해당하는 회원이 없습니다.
             </v-alert>
           </template>
@@ -195,15 +190,146 @@ if (userStore.selectedGradeForChip !== null) {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/scss/variables.scss";
+@use "@/assets/scss/variables.scss" as *;
+.v-container {
+  padding: 0;
+  color: $black;
+  .userboard-card {
+    display: flex;
+    flex-direction: column;
+    box-shadow: none;
+    padding: 16px;
+    gap: 8px;
+    :deep(.v-card-text) {
+      .v-table {
+        box-shadow: none !important;
+        .v-table__wrapper {
+          .v-data-table-rows-no-data {
+            .bg-info {
+              background-color: transparent !important;
+            }
+          }
+        }
+        .v-data-table-footer {
+          justify-content: space-between;
+        }
+      }
+      .v-data-table {
+        margin: 0 !important;
+      }
+      .v-alert {
+        margin: 0 !important;
+        color: inherit !important;
+        .v-alert__content {
+          color: inherit !important;
+        }
+        :deep(.v-alert__prepend) {
+          display: none !important;
+        }
+      }
+      .v-slide-group {
+        padding: 0;
+        .v-slide-group__container {
+          .v-slide-group__content {
+            gap: 8px;
+            .v-chip {
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+    .card-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      min-height: 200px;
+    }
+    .table-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 200px;
+      justify-content: center;
+      align-items: center;
+      @include table-outline-and-box;
+      .v-alert {
+        padding: 4px 12px;
+        :deep(.v-alert__prepend) {
+          display: none !important;
+        }
+      }
+    }
+  }
+  .userboard-info-card {
+    display: flex;
+    flex-direction: column;
+    box-shadow: none;
+    padding: 16px;
+    gap: 8px;
+    .user-info-table-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      :deep(.v-alert) {
+        background-color: $gray-2nd;
+        margin-top: 0;
+        padding: 4px 12px;
+        .v-alert__content {
+          color: $black;
+        }
+        .v-alert__prepend {
+          display: none;
+        }
+      }
+      .text-info {
+        color: transparent !important;
+      }
+      .table-wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        @include table-outline-and-box;
+        padding: 16px;
+        min-height: 200px;
+        :deep(.v-table__wrapper) {
+          width: 100%;
+        }
+        :deep(.v-data-table-footer) {
+          width: 100%;
+          justify-content: space-between;
+        }
+      }
+      :deep(.v-slide-group) {
+        padding: 0;
+        .v-slide-group__container {
+          .v-slide-group__content {
+            gap: 8px;
+            .v-chip {
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 .v-card {
-  margin-bottom: 16px;
+  max-width: none !important;
+  box-shadow: none;
+  .v-card-text {
+    padding: 0;
+  }
 }
-.v-list-item-subtitle {
-  white-space: pre-wrap; /* 자기소개 줄바꿈 적용 */
-}
+
 .main-title {
   @include text-container-header;
+  padding: 0;
+  .v-icon {
+    display: none;
+  }
 }
 
 .sub-title {

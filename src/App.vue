@@ -5,23 +5,20 @@ import UserInfoByType from "@/components/UserInfoByType.vue";
 </script>
 
 <template>
-  <v-container fluid>
-    <v-container>
-      <v-container>
-        <FileUpload />
-      </v-container>
-    </v-container>
-    <v-container>
-      <v-container>
-        <Dashboard />
-      </v-container>
-      <v-container>
-        <UserInfoByType />
-      </v-container>
-    </v-container>
+  <v-container class="entire-wrap">
+    <FileUpload />
+    <Dashboard />
+    <UserInfoByType />
   </v-container>
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/scss/variables.scss";
+@use "@/assets/scss/variables.scss" as *;
+
+.entire-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
 </style>

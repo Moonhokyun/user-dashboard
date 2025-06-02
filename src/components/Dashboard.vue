@@ -1,59 +1,54 @@
 <template>
   <v-container>
-    <v-container>
-      <v-container>
-        <v-card class="dashboard-card">
-          <v-card-title class="main-title">등급별 회원 수</v-card-title>
-          <v-card-text>
-            <Bar
-              v-if="chartData.labels && chartData.labels.length > 0"
-              :data="chartData"
-              :options="chartOptions"
-            />
-            <p
-              v-else-if="
-                !userStore.isLoading &&
-                userStore.users.length === 0 &&
-                !userStore.errorMeessage
-              "
-            >
-              표시할 데이터가 없습니다. PDF 파일을 먼저 업로드해주세요.
-            </p>
-            <p v-if="userStore.isLoading">차트 데이터를 불러오는 중...</p>
-            <p v-if="userStore.errorMeessage && userStore.users.length === 0">
-              {{ userStore.errorMeessage }}
-            </p>
-          </v-card-text>
-        </v-card>
-      </v-container>
+    <v-card class="dashboard-card">
+      <v-card-title class="main-title">등급별 회원 수</v-card-title>
+      <v-card-text class="card-container">
+        <Bar
+          v-if="chartData.labels && chartData.labels.length > 0"
+          :data="chartData"
+          :options="chartOptions"
+        />
+        <p
+          v-else-if="
+            !userStore.isLoading &&
+            userStore.users.length === 0 &&
+            !userStore.errorMeessage
+          "
+        >
+          표시할 데이터가 없습니다. PDF 파일을 먼저 업로드해주세요.
+        </p>
+        <p v-if="userStore.isLoading">차트 데이터를 불러오는 중...</p>
+        <p v-if="userStore.errorMeessage && userStore.users.length === 0">
+          {{ userStore.errorMeessage }}
+        </p>
+      </v-card-text>
+    </v-card>
+  </v-container>
 
-      <v-container>
-        <v-card class="dashboard-card">
-          <v-card-title class="main-title">회원 목록</v-card-title>
-          <v-card-text>
-            <v-data-table
-              :headers="tableHeaders"
-              :items="userStore.users"
-              item-value="name"
-              class="elevation-1"
-              :loading="userStore.isLoading"
-              @click:row="handleRowClick"
-              hover
-            >
-              <template v-slot:loading>
-                <v-skeleton-loader type="table-row@5"></v-skeleton-loader>
-              </template>
-              <template v-slot:no-data>
-                <v-alert type="info" prominent dense>
-                  표시할 회원 정보가 없습니다. PDF를 업로드하거나 예시 데이터를
-                  로드해주세요.
-                </v-alert>
-              </template>
-            </v-data-table>
-          </v-card-text>
-        </v-card>
-      </v-container>
-    </v-container>
+  <v-container>
+    <v-card class="dashboard-card">
+      <v-card-title class="main-title">회원 목록</v-card-title>
+      <v-card-text class="card-container">
+        <v-data-table
+          :headers="tableHeaders"
+          :items="userStore.users"
+          item-value="name"
+          class="table-wrap"
+          :loading="userStore.isLoading"
+          @click:row="handleRowClick"
+          hover
+        >
+          <template v-slot:loading>
+            <v-skeleton-loader type="table-row@5"></v-skeleton-loader>
+          </template>
+          <template v-slot:no-data>
+            <v-alert type="info" prominent dense>
+              분석을 시작하면 데이터가 나타납니다
+            </v-alert>
+          </template>
+        </v-data-table>
+      </v-card-text>
+    </v-card>
   </v-container>
 </template>
 
@@ -175,18 +170,64 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/scss/variables.scss";
-@import "@/assets/scss/variables.scss";
+@use "@/assets/scss/variables.scss" as *;
+
+.v-container {
+  padding: 0;
+  color: $black;
+  .dashboard-card {
+    display: flex;
+    flex-direction: column;
+    box-shadow: none;
+    padding: 16px;
+    gap: 8px;
+
+    .v-card-text {
+      .table-wrap {
+        box-shadow: none !important;
+        .v-table__wrapper {
+          .v-data-table-rows-no-data {
+            .bg-info {
+              background-color: transparent !important;
+            }
+          }
+        }
+      }
+      .v-data-table {
+        .v-alert {
+          color: inherit !important;
+          .v-alert__content {
+            color: inherit !important;
+          }
+          :deep(.v-alert__prepend) {
+            display: none !important;
+          }
+        }
+      }
+    }
+    .card-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      @include table-outline-and-box;
+      padding: 16px;
+      min-height: 200px;
+      .table-wrap {
+        :deep(.v-data-table-footer) {
+          justify-content: space-between;
+        }
+      }
+    }
+  }
+}
 
 .v-card {
-  margin-bottom: 16px;
   max-width: none !important;
-}
-.dashboard-card {
-  border: $custom-border;
+  box-shadow: none;
 }
 .main-title {
   @include text-container-header;
+  padding: 0;
 }
 
 .sub-title {

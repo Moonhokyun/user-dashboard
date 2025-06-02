@@ -1,14 +1,13 @@
 <template>
   <v-container>
-    <v-card>
+    <v-card class="file-upload-wrap">
       <v-card-title class="main-title"
         >정보 확인을 위한 파일을 첨부하세요</v-card-title
       >
-      <v-card-text>
+      <v-card-text class="pdf-insert-card">
         <v-file-input
           label="PDF 파일을 선택하세요"
           accept=".pdf"
-          prepend-icon="mdi-file-pdf-box"
           show-size
           :loading="userStore.isLoading"
           :disabled="userStore.isLoading"
@@ -287,8 +286,45 @@ function processExamplePDF() {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/scss/variables.scss";
+@use "@/assets/scss/variables.scss" as *;
+.v-container {
+  padding: 0;
+  .file-upload-wrap {
+    display: flex;
+    flex-direction: column;
+    box-shadow: none;
+    padding: 16px;
+    gap: 8px;
+    .pdf-insert-card {
+      min-height: 200px;
+      padding: 16px;
+      @include table-outline-and-box;
+    }
+    :deep(.v-card-text) {
+      .v-input {
+        height: 100%;
+        .v-input__prepend {
+          display: none;
+        }
+        .v-input__control {
+          .v-field {
+            padding: 0;
+            color: transparent !important;
+          }
+          .v-field__field {
+            background-color: #fff !important;
+            border-bottom-color: unset !important;
+          }
+        }
+        .v-input__details {
+          display: none;
+        }
+      }
+    }
+  }
+}
 .main-title {
+  padding: 0;
   @include text-container-header;
 }
 

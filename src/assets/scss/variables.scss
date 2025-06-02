@@ -1,5 +1,15 @@
 $my-custom-padding: 16px;
-$custom-border: 1px solid #000;
+$white: #fffaff;
+$gray: #e7dbe4;
+$gray-2nd: #e0e0e0;
+$main: #5e4b87;
+$black: #363537;
+
+@mixin table-outline-and-box {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+}
+
 @mixin text-container-header {
   font-weight: bold;
   font-size: 20px;
