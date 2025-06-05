@@ -87,9 +87,6 @@
           variant="tonal"
           dense
         >
-          <v-alert-title
-            >{{ selectedChipGrade }}등급 회원 행동 제안</v-alert-title
-          >
           {{ actionSuggestion }}
         </v-alert>
         <v-alert
@@ -271,8 +268,29 @@ if (userStore.selectedGradeForChip !== null) {
     .user-info-table-wrap {
       display: flex;
       flex-direction: column;
+      justify-content: center;
+      align-items: center;
       gap: 8px;
+      :deep(.v-table) {
+        .v-table__wrapper {
+          width: 100%;
+          table > tbody > tr > td {
+            .v-alert {
+              background-color: transparent !important;
+            }
+          }
+        }
+      }
+      .text-center {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        @include table-outline-and-box;
+      }
       :deep(.v-alert) {
+        width: 100%;
         background-color: $gray-2nd;
         margin-top: 0;
         padding: 4px 12px;
@@ -293,15 +311,13 @@ if (userStore.selectedGradeForChip !== null) {
         @include table-outline-and-box;
         padding: 16px;
         min-height: 200px;
-        :deep(.v-table__wrapper) {
-          width: 100%;
-        }
         :deep(.v-data-table-footer) {
           width: 100%;
           justify-content: space-between;
         }
       }
       :deep(.v-slide-group) {
+        width: 100%;
         padding: 0;
         .v-slide-group__container {
           .v-slide-group__content {

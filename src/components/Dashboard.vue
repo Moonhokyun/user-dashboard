@@ -216,6 +216,16 @@ watch(
         :deep(.v-data-table-footer) {
           justify-content: space-between;
         }
+        // :deep(.v-table__wrapper) {
+        //   table > thead > tr > th {
+        //     .v-data-table-header__content {
+        //       font-weight: 700;
+        //       span {
+        //         font-weight: inherit;
+        //       }
+        //     }
+        //   }
+        // }
       }
     }
   }

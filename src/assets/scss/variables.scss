@@ -8,6 +8,7 @@ $black: #363537;
 @mixin table-outline-and-box {
   border: 1px solid #e0e0e0;
   border-radius: 10px;
+  min-height: 200px;
 }
 
 @mixin text-container-header {
