@@ -265,12 +265,14 @@ if (userStore.selectedGradeForChip !== null) {
     box-shadow: none;
     padding: 16px;
     gap: 8px;
+    background-color: transparent;
     .user-info-table-wrap {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 8px;
+      color: $white;
       :deep(.v-table) {
         .v-table__wrapper {
           width: 100%;
@@ -291,7 +293,7 @@ if (userStore.selectedGradeForChip !== null) {
       }
       :deep(.v-alert) {
         width: 100%;
-        background-color: $gray-2nd;
+        background-color: #ffffff90;
         margin-top: 0;
         padding: 4px 12px;
         .v-alert__content {
@@ -311,6 +313,8 @@ if (userStore.selectedGradeForChip !== null) {
         @include table-outline-and-box;
         padding: 16px;
         min-height: 200px;
+        background-color: transparent;
+        color: $white;
         :deep(.v-data-table-footer) {
           width: 100%;
           justify-content: space-between;
@@ -342,6 +346,7 @@ if (userStore.selectedGradeForChip !== null) {
 
 .main-title {
   @include text-container-header;
+  color: $white;
   padding: 0;
   .v-icon {
     display: none;

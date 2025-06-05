@@ -20,5 +20,6 @@ import UserInfoByType from "@/components/UserInfoByType.vue";
   flex-direction: column;
   gap: 16px;
   padding: 16px;
+  background-color: $black;
 }
 </style>

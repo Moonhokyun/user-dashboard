@@ -181,10 +181,11 @@ watch(
     box-shadow: none;
     padding: 16px;
     gap: 8px;
-
+    background-color: transparent;
     .v-card-text {
       .table-wrap {
         box-shadow: none !important;
+        background-color: transparent;
         .v-table__wrapper {
           .v-data-table-rows-no-data {
             .bg-info {
@@ -212,20 +213,12 @@ watch(
       @include table-outline-and-box;
       padding: 16px;
       min-height: 200px;
+      color: $white;
       .table-wrap {
+        color: $white;
         :deep(.v-data-table-footer) {
           justify-content: space-between;
         }
-        // :deep(.v-table__wrapper) {
-        //   table > thead > tr > th {
-        //     .v-data-table-header__content {
-        //       font-weight: 700;
-        //       span {
-        //         font-weight: inherit;
-        //       }
-        //     }
-        //   }
-        // }
       }
     }
   }
@@ -236,6 +229,7 @@ watch(
   box-shadow: none;
 }
 .main-title {
+  color: $white;
   @include text-container-header;
   padding: 0;
 }

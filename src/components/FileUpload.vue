@@ -255,6 +255,7 @@ function processExamplePDF() {
     box-shadow: none;
     padding: 16px;
     gap: 8px;
+    background-color: transparent;
     .pdf-insert-card {
       display: flex;
       justify-content: center;
@@ -274,11 +275,19 @@ function processExamplePDF() {
               }
               .v-field__input {
                 padding: 0;
+                color: $white;
+                background-color: transparent;
+                border-bottom-color: $black;
               }
             }
             .v-field__outline {
               border-style: none !important;
             }
+            .v-field__clearable {
+              color: $white;
+            }
+          }
+          .v-card--variant-elevated {
           }
         }
       }
@@ -294,8 +303,10 @@ function processExamplePDF() {
             padding: 0;
           }
           .v-field__field {
-            background-color: #fff !important;
+            background-color: transparent !important;
             border-bottom-color: unset !important;
+            box-shadow: none !important;
+            color: $white !important;
           }
         }
         .v-input__details {
@@ -309,28 +320,39 @@ function processExamplePDF() {
       min-height: unset;
       .file-insert-btn {
         background-color: $main;
-        color: $white;
         width: 100%;
-        font-weight: bold;
         border-radius: 10px;
+        color: $white;
+        :deep(.v-btn__content) {
+          font-weight: bold;
+        }
+      }
+      .sample-insert-btn {
+        :deep(.v-btn__content) {
+          color: $white;
+        }
       }
     }
   }
 }
 .main-title {
   padding: 0;
+  color: $white;
   @include text-container-header;
 }
 
 .sub-title {
+  color: $white;
   @include text-body-header14;
 }
 
 .body-text {
+  color: $white;
   @include text-body-body14;
 }
 
 .label-text {
+  color: $white;
   @include text-body-label12;
 }
 </style>
