@@ -28,6 +28,9 @@
   <v-container>
     <v-card class="dashboard-card">
       <v-card-title class="main-title">회원 목록</v-card-title>
+      <p v-if="userStore.users.length > 0" class="title-alert">
+        회원 이름을 클릭하면 회원 세부정보가 나타납니다.
+      </p>
       <v-card-text class="card-container">
         <v-data-table
           :headers="tableHeaders"
@@ -220,6 +223,14 @@ watch(
           justify-content: space-between;
         }
       }
+    }
+    .title-alert {
+      width: 100%;
+      background-color: #ffffff90;
+      margin-top: 0;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 14px;
     }
   }
 }

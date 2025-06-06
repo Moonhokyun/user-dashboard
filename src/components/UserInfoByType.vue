@@ -2,7 +2,7 @@
   <v-container>
     <v-card class="userboard-card" v-if="userStore.selectedUser">
       <v-card-title class="main-title"> 회원 상세 정보 </v-card-title>
-      <v-list lines="two">
+      <v-list class="user-detail" lines="two">
         <v-list-item
           :title="userStore.selectedUser.name"
           subtitle="회원 이름"
@@ -197,6 +197,7 @@ if (userStore.selectedGradeForChip !== null) {
     box-shadow: none;
     padding: 16px;
     gap: 8px;
+    background-color: transparent;
     :deep(.v-card-text) {
       .v-table {
         box-shadow: none !important;
@@ -257,6 +258,13 @@ if (userStore.selectedGradeForChip !== null) {
           display: none !important;
         }
       }
+    }
+    .user-detail {
+      @include table-outline-and-box;
+      padding: 16px;
+      min-height: 200px;
+      color: $white;
+      background-color: transparent;
     }
   }
   .userboard-info-card {
