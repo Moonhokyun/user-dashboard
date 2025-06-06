@@ -48,8 +48,7 @@ import { ref, computed, watch } from "vue";
 import { useUserStore } from "@/stores/userStore";
 import * as pdfjsLib from "pdfjs-dist/build/pdf";
 
-// 이전에 설정한 PDF 워커 경로
-pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdfjs/pdf.worker.min.js";
+pdfjsLib.GlobalWorkerOptions.workerSrc = "pdfjs/pdf.worker.min.js";
 
 const userStore = useUserStore();
 const fileInputModel = ref(null); // v-file-input의 v-model과 연결될 ref (단일 파일이므로 File 객체 또는 null)
